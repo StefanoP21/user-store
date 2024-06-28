@@ -1,13 +1,11 @@
+node_modules/
 
+mongo/
 
+dist/
+build/
 
-
+coverage/
 
 .env
 
-mongo/
-postgres/
-node_modules/
-dist/
-build/
-coverage/
