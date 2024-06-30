@@ -1,4 +1,4 @@
-import { bcryptAdapter, JwtAdapter } from '../../config';
+import { bcryptAdapter, envs, JwtAdapter } from '../../config';
 import { UserModel } from '../../data';
 import {
   CustomError,
@@ -46,7 +46,10 @@ export class AuthService {
     if (!passwordValid) throw CustomError.badRequest('Incorrect credentianls');
     const { password, ...userEntity } = UserEntity.fromObject(user);
 
-    const token = await JwtAdapter.generateToken({ id: user.id });
+    const token = await JwtAdapter.generateToken(
+      { id: user.id },
+      envs.JWT_SEED
+    );
     if (!token)
       throw CustomError.internalServerError('Error while generating jwt');
 
