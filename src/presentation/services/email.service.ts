@@ -1,7 +1,7 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import { Attachment } from 'nodemailer/lib/mailer';
 
-export interface SendEmailOptions {
+interface SendEmailOptions {
   to: string | string[];
   subject: string;
   html: string;

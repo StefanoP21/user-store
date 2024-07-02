@@ -6,10 +6,11 @@ import {
   RegisterUserDto,
   UserEntity,
 } from '../../domain';
+import { EmailService } from './email.service';
 
 export class AuthService {
   //* DI
-  constructor() {}
+  constructor(private readonly emailService: EmailService) {}
 
   public async registerUser(registerUserDto: RegisterUserDto) {
     const existUser = await UserModel.findOne({ email: registerUserDto.email });
@@ -29,9 +30,10 @@ export class AuthService {
         envs.JWT_SEED
       );
       if (!token)
-        throw CustomError.internalServerError('Error while generating jwt');
+        throw CustomError.internalServerError('Error while generating token');
 
-      //TODO: send email
+      //* send email
+      this.sendEmailValidationLink(user.email!);
 
       const { password, ...userEntity } = UserEntity.fromObject(user);
 
@@ -58,8 +60,33 @@ export class AuthService {
       envs.JWT_SEED
     );
     if (!token)
-      throw CustomError.internalServerError('Error while generating jwt');
+      throw CustomError.internalServerError('Error while generating token');
 
     return { user: userEntity, token };
   }
+
+  private sendEmailValidationLink = async (email: string) => {
+    const token = await JwtAdapter.generateToken({ email }, envs.JWT_SEED);
+    if (!token)
+      throw CustomError.internalServerError('Error while generating token');
+
+    const link = `${envs.WEBSERVICE_URL}/auth/validate-email/${token}`;
+    const html = `
+      <h1>Validate your email</h1>
+      <p>Click on the following link to validate your email</p>
+      <a href="${link}">Validate your email: ${email}</a>
+    `;
+
+    const options = {
+      to: email,
+      subject: 'Validate your email',
+      html,
+    };
+
+    const isSet = await this.emailService.sendEmail(options);
+
+    if (!isSet) throw CustomError.internalServerError('Error sending email');
+
+    return true;
+  };
 }
