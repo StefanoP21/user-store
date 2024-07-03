@@ -30,11 +30,9 @@ export class CategoryController {
 
     if (error) return res.json(400).json({ error });
 
-    res.json(paginationDto);
-
-    // this.categoryService
-    //   .getCategories()
-    //   .then((categories) => res.status(200).json(categories))
-    //   .catch((err) => this.handleError(err, res));
+    this.categoryService
+      .getCategories(paginationDto!)
+      .then((categories) => res.status(200).json(categories))
+      .catch((err) => this.handleError(err, res));
   };
 }
