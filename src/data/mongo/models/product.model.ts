@@ -1,4 +1,4 @@
-import { model, Schema, Types } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const productSchema = new Schema({
   name: {
@@ -26,6 +26,14 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Category',
     require: true,
+  },
+});
+
+productSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret, options) {
+    delete ret._id;
   },
 });
 
