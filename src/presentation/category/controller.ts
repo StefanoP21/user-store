@@ -21,7 +21,7 @@ export class CategoryController {
     this.categoryService
       .createCategory(createCategoryDto!, req.body.user)
       .then((category) => res.status(201).json(category))
-      .catch((err) => this.handleError(err, res));
+      .catch((err) => this.handleError(res, err));
   };
 
   getCategories = async (req: Request, res: Response) => {
@@ -33,6 +33,6 @@ export class CategoryController {
     this.categoryService
       .getCategories(paginationDto!)
       .then((categories) => res.status(200).json(categories))
-      .catch((err) => this.handleError(err, res));
+      .catch((err) => this.handleError(res, err));
   };
 }

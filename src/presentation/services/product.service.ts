@@ -9,7 +9,7 @@ export class ProductService {
     const productExist = await ProductModel.findOne({
       name: createProductDto.name,
     });
-    if (productExist) throw CustomError.badRequest('Category already exist');
+    if (productExist) throw CustomError.badRequest('Product already exist');
 
     try {
       const product = new ProductModel(createProductDto);

@@ -24,18 +24,18 @@ export class ProductController {
     this.productService
       .createProduct(createProductDto!)
       .then((product) => res.status(201).json(product))
-      .catch((err) => this.handleError(err, res));
+      .catch((err) => this.handleError(res, err));
   };
 
   getProducts = async (req: Request, res: Response) => {
     const { page = 1, limit = 10 } = req.query;
     const [error, paginationDto] = PaginationDto.create(+page, +limit);
 
-    if (error) return res.json(400).json({ error });
+    if (error) return res.status(400).json({ error });
 
     this.productService
       .getProducts(paginationDto!)
       .then((products) => res.status(200).json(products))
-      .catch((err) => this.handleError(err, res));
+      .catch((err) => this.handleError(res, err));
   };
 }
