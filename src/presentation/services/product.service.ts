@@ -12,7 +12,7 @@ export class ProductService {
     if (productExist) throw CustomError.badRequest('Category already exist');
 
     try {
-      const product = new ProductModel({ createProductDto });
+      const product = new ProductModel(createProductDto);
 
       await product.save();
 

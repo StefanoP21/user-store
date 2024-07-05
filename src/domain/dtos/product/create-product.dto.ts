@@ -1,3 +1,5 @@
+import { Validators } from '../../../config';
+
 export class CreateProductDto {
   private constructor(
     public readonly name: string,
@@ -13,7 +15,10 @@ export class CreateProductDto {
 
     if (!name) return ['Missing name', undefined];
     if (!user) return ['Missing user', undefined];
+    if (!Validators.isMongoId(user)) return ['Invalid user ID', undefined];
     if (!category) return ['Missing category', undefined];
+    if (!Validators.isMongoId(category))
+      return ['Invalid category ID', undefined];
 
     return [
       undefined,
