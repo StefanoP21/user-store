@@ -28,6 +28,14 @@ Para levantar las bases de datos, ejecute:
 docker-compose up -d
 ```
 
+### Llenar la base de datos
+
+Para cargar la base de datos con datos de prueba, ejecuta:
+
+```bash
+npm run seed
+```
+
 ### Ejecución en modo de desarrollo
 
 Para iniciar la aplicación en modo de desarrollo, ejecuta:
