@@ -32,7 +32,13 @@ export class FileUploadController {
             .catch((err) => this.handleError(err, res));
     };
 
-    uploadMultipleFile = async (req: Request, res: Response) => {
-        res.json('upload multiple files');
+    uploadMultipleFiles = async (req: Request, res: Response) => {
+        const type = req.params.type;
+        const files = req.body.files as UploadedFile[];
+
+        this.fileUploadService
+            .uploadMultiple(files, `uploads/${type}`)
+            .then((uploaded) => res.json(uploaded))
+            .catch((error) => this.handleError(error, res));
     };
 }
